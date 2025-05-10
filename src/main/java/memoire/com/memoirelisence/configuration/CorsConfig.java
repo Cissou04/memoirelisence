@@ -13,7 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Permet toutes les routes
-                        .allowedOrigins("http://localhost:5173") // Autorise Vite React
+                        .allowedOrigins("*") // Autorise Vite React
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")// Autorise ces méthodes HTTP
                         .allowedHeaders("*")// Autorise tous les headers
                         .allowCredentials(true);

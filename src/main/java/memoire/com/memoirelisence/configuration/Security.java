@@ -31,11 +31,19 @@ public class Security {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        return  httpSecurity.cors().and().csrf(AbstractHttpConfigurer::disable)
+        return  httpSecurity
+                .cors(cors -> cors.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorize->
                                 authorize
-                                        .requestMatchers("/auth/**").permitAll()
+                                        .requestMatchers("/auth/**",
+                                                "/v3/api-docs/**",
+                                                "/swagger-ui/**",
+                                                "/swagger-ui.html",
+                                                "/swagger-ressources/**",
+                                                "/webjars/**"
+                                        ).permitAll()
                                         //.requestMatchers("/auth/login").authenticated()
                                         .requestMatchers("/api/role/**").hasRole("ADMIN")
                                         .requestMatchers("/api/utilisateur/**").hasRole("ADMIN")
@@ -74,18 +82,5 @@ public class Security {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         return daoAuthenticationProvider;
     }
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html"
-                ).permitAll()
-                .anyRequest().authenticated()
-            );
-        return http.build();
-    }
+
 }
